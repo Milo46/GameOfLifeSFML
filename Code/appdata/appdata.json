@@ -1,0 +1,14 @@
+{
+    "CellsMapDelay": 100.0,
+    "Window": {
+        "Resolution": {
+            "Width": 960.0,
+            "Height": 720.0
+        }
+    },
+    "GridCellSize": {
+        "Width": 10.0,
+        "Height": 10.0
+    },
+    "DefaultMap": "appdata/defaultmap"
+}
