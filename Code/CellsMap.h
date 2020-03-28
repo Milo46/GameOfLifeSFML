@@ -7,6 +7,8 @@
 #include "Button.h"
 #include <fstream>
 
+#include <iostream>
+
 //Typ wyliczeniowy pozwalajacy zidentyfikowac stan komorki
 enum CellType {
 	Dead = 0, Living = 1
@@ -20,19 +22,21 @@ private:
 
 	sf::RectangleShape rect; //Wzorcowy kwadrat, ktory bedzie wyswietlany dla kazdej zywej komorki
 
-	//lcsc = livingSellSpawningChance
-	void generate(int lcsc); //Funkcja generujaca poczatek symulacji
+	float delay;
+	float storagedDt;
 
 public:
 	//Rozmiar jednej komorki, ilosc komorek, szansa na pojawienie sie komorki w danym polu
-	CellsMap(sf::Vector2f rectSize = sf::Vector2f(0, 0), sf::Vector2f cellsDataSize = sf::Vector2f(0, 0), int lcsc = 50);
+	CellsMap(const sf::Vector2f& rectSize = sf::Vector2f(0, 0), const sf::Vector2f& cellsDataSize = sf::Vector2f(0, 0), const float& delay = 100.f, const int& lcsc = 20, const std::string& mapfile = "");
 	virtual ~CellsMap();
 
 	void loadFromFile(const std::string& filePath); //Funkcja ladujaca mape z pliku (obecnie nie uzywana)
 
+	//lcsc = livingSellSpawningChance
+	void generate(const int& lcsc = 20); //Funkcja generujaca poczatek symulacji
 	void clear(); //Funkcja czyszczaca mape
 
-	void update(bool isEvolving, const sf::Vector2i& mousePos, bool isMouseLeftClicked);
+	void update(const bool& isEvolving, const sf::Vector2i& mousePos, const bool& isMouseLeftClicked, const float& dt);
 	void render(sf::RenderWindow* window);
 };
 

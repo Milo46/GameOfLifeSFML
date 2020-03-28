@@ -1,33 +1,25 @@
- #include "Button.h"
+#include "Button.h"
 
-Button::Button(sf::Vector2f pos, sf::Vector2f size, sf::Font* font, std::string text, ButtonColors buttonColors)
+ButtonColors::ButtonColors()
 {
-	//Ustawienie wszystkich zmiennych
+    this->idle = sf::Color();
+    this->hover = sf::Color();
+    this->active = sf::Color();
+}
 
-	this->shape = sf::RectangleShape(size);
-	this->shape.setPosition(pos);
+ButtonColors::ButtonColors(const sf::Color& idle, const sf::Color& hover, const sf::Color& active)
+{
+    this->idle = idle;
+    this->hover = hover;
+    this->active = active;
+}
 
+Button::Button(const sf::Vector2f& pos, const sf::Vector2f& size, sf::Font* font, const std::string& text, const ButtonColors& buttonColors)
+    :Textbox(pos, size, font, text, buttonColors.idle)
+{
 	this->buttonState = BTN_IDLE;
 
-	this->font = font;
-	this->text.setFont(*this->font);
-	this->text.setString(text);
-	this->text.setFillColor(sf::Color::White);
-
-	//Uzylem dwa razy wiekszej czcionki, a potem zmniejszylem skale, aby uzyskac ostrzejszy tekst
-	this->text.setCharacterSize(26);
-	this->text.setScale(sf::Vector2f(0.5f, 0.5f));
-
-	//Miej wiecej wysrodkowanie tekstu na przycisku
-	this->text.setPosition(
-		this->shape.getPosition().x + (this->shape.getGlobalBounds().width / 2.f) - this->text.getGlobalBounds().width / 2.f,
-		this->shape.getPosition().y + (this->shape.getGlobalBounds().height / 2.f) - this->text.getGlobalBounds().height / 2.f
-	);
-
 	this->buttonColors = buttonColors;
-
-	this->shape.setFillColor(this->buttonColors.idle);
-
 }
 
 Button::~Button()
@@ -44,15 +36,10 @@ bool Button::isPressed()
 
 void Button::changeText(const std::string& text)
 {
-	//Zmienia i centruje tekst
-	this->text.setString(text);
-	this->text.setPosition(
-		this->shape.getPosition().x + (this->shape.getGlobalBounds().width / 2.f) - this->text.getGlobalBounds().width / 2.f,
-		this->shape.getPosition().y + (this->shape.getGlobalBounds().height / 2.f) - this->text.getGlobalBounds().height / 2.f
-	);
+    this->setText(text);
 }
 
-void Button::update(const sf::Vector2f& mousePos, bool isMouseLeftClicked)
+void Button::update(const sf::Vector2f& mousePos, const bool& isMouseLeftClicked)
 {
 	//Aktualizuje stan przycisku
 
@@ -60,7 +47,7 @@ void Button::update(const sf::Vector2f& mousePos, bool isMouseLeftClicked)
 	this->buttonState = BTN_IDLE;
 
 	//Jezeli myszka znajduje sie na przycisku
-	if (this->shape.getGlobalBounds().contains(mousePos))
+	if (this->getShape().getGlobalBounds().contains(mousePos))
 	{
 		this->buttonState = BTN_HOVER;
 
@@ -75,21 +62,15 @@ void Button::update(const sf::Vector2f& mousePos, bool isMouseLeftClicked)
 	switch (this->buttonState)
 	{
 	case BTN_IDLE:
-		this->shape.setFillColor(this->buttonColors.idle);
+		this->setFillColor(this->buttonColors.idle);
 		break;
 
 	case BTN_HOVER:
-		this->shape.setFillColor(this->buttonColors.hover);
+		this->setFillColor(this->buttonColors.hover);
 		break;
 
 	case BTN_ACTIVE:
-		this->shape.setFillColor(this->buttonColors.active);
+		this->setFillColor(this->buttonColors.active);
 		break;
 	}
-}
-
-void Button::render(sf::RenderWindow* window)
-{
-	window->draw(this->shape);
-	window->draw(this->text);
 }

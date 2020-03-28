@@ -4,13 +4,17 @@
 //Np. do wyznaczania liczb pierwszych
 
 //Tylko dla Visual Studio, powoduje, ze konsola sie nie wyswietla
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
+//#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
 
 #include "game.h"
 
-void main()
+#include "SFML/Graphics.hpp"
+
+int main()
 {
 	//Stworzenie obiektu typu Game i zastartowanie gry
-	Game game;
+    Game game;
 	game.run();
+
+	return 0;
 }

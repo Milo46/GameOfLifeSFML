@@ -5,6 +5,6 @@
 
 #include <random>
 
-int randint(int min, int max);
+int randint(const int& min, const int& max);
 
 #endif

@@ -3,8 +3,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
 
-#include <SFML/Graphics.hpp>
-#include <string>
+#include "Textbox.h"
 
 //Stany przycisku
 enum ButtonStates {
@@ -16,42 +15,28 @@ struct ButtonColors
 {
 	sf::Color idle, hover, active;
 
-	ButtonColors()
-	{
-		this->idle = sf::Color();
-		this->hover = sf::Color();
-		this->active = sf::Color();
-	}
+	ButtonColors();
 
-	ButtonColors(sf::Color idle, sf::Color hover, sf::Color active)
-	{
-		this->idle = idle;
-		this->hover = hover;
-		this->active = active;
-	}
+	ButtonColors(const sf::Color& idle, const sf::Color& hover, const sf::Color& active);
 };
 
-class Button
+class Button : public Textbox
 {
 private:
 	short unsigned buttonState; //Stan przycisku
 
-	sf::RectangleShape shape; //Ksztalt
-	sf::Font* font; //Wskaznik na czcionke
-	sf::Text text; //Tekst
-
 	ButtonColors buttonColors;
 
 public:
-	Button(sf::Vector2f pos = sf::Vector2f(), sf::Vector2f size = sf::Vector2f(), sf::Font* font = NULL, std::string text = "", ButtonColors buttonColors = ButtonColors());
+	Button(const sf::Vector2f& pos = sf::Vector2f(), const sf::Vector2f& size = sf::Vector2f(), sf::Font* font = NULL,
+        const std::string& text = "", const ButtonColors& buttonColors = ButtonColors());
 	virtual ~Button();
 
 	bool isPressed(); //Zwraca prawde, jezeli zostal klikniety
 
-	void changeText(const std::string& text); //Funkcja zmieniajaca tekst
+	void changeText(const std::string& text);
 
-	void update(const sf::Vector2f& mousePos, bool isMouseLeftClicked);
-	void render(sf::RenderWindow* window);
+	void update(const sf::Vector2f& mousePos, const bool& isMouseLeftClicked);
 };
 
 #endif
